@@ -7,7 +7,7 @@ namespace LibrarySystem.Api.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int InventoryNumber { get; set; }
+        public int BookNumber { get; set; }
 
         [Required(ErrorMessage = "A könyv címe kötelező.")]
         [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "A cím nem lehet csak whitespace.")]
