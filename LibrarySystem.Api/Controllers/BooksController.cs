@@ -16,14 +16,12 @@ namespace LibrarySystem.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Books (Összes könyv lekérdezése - READ)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
             return await _context.Books.ToListAsync();
         }
 
-        // GET: api/Books/5 (Egy adott könyv lekérdezése leltári szám alapján - READ)
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
@@ -37,19 +35,15 @@ namespace LibrarySystem.Api.Controllers
             return book;
         }
 
-        // POST: api/Books (Új könyv felvétele - CREATE)
         [HttpPost]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
-            // Az Entity Framework Model Validáció itt automatikusan lefut!
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
-            // Visszaadja a sikeresen létrehozott könyvet és a hivatkozását
             return CreatedAtAction(nameof(GetBook), new { id = book.BookNumber }, book);
         }
 
-        // PUT: api/Books/5 (Meglévő könyv módosítása - UPDATE)
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
@@ -76,10 +70,9 @@ namespace LibrarySystem.Api.Controllers
                 }
             }
 
-            return NoContent(); // Sikeres módosítás esetén nincs visszatérési adat, csak egy 204-es státuszkód
+            return NoContent();
         }
 
-        // DELETE: api/Books/5 (Könyv törlése - DELETE)
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
@@ -95,7 +88,6 @@ namespace LibrarySystem.Api.Controllers
             return NoContent();
         }
 
-        // Segédmetódus a módosításhoz
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.BookNumber == id);
