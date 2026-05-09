@@ -27,6 +27,21 @@ public class LoansController : ControllerBase
         
         return loans;
     }
+    
+    [HttpGet("reader/{readerNumber}")] 
+    public async Task<ActionResult<IEnumerable<Loan>>> GetReaderLoans(int readerNumber)
+    {
+        var loans = await _context.Loans
+            .Where(l => l.ReaderNumber == readerNumber)
+            .ToListAsync();
+    
+        foreach (var loan in loans)
+        {
+            loan.PenaltyFee = CalculatePenalty(loan.ReturnDeadline);
+        }
+    
+        return loans;
+    }
 
     [HttpPost]
     public async Task<ActionResult<Loan>> PostLoan(Loan loan)

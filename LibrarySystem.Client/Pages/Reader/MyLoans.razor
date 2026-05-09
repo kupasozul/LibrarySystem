@@ -64,12 +64,35 @@
 @code {
     private int readerId;
     private List<Loan>? myLoans;
+    private string? errorMessage; 
+    private bool isLoading;     
 
     private async Task LoadMyLoans()
     {
-        if (readerId > 0)
+        if (readerId <= 0) return;
+
+        try
         {
+            isLoading = true;
+            errorMessage = null;
+            myLoans = null; 
+
             myLoans = await LoanService.GetReaderLoansAsync(readerId);
+            
+            if (myLoans == null || !myLoans.Any())
+            {
+                
+            }
+        }
+        catch (Exception ex)
+        {
+            
+            errorMessage = "Hiba történt az adatok lekérésekor. Ellenőrizze az olvasószámot!";
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 }
