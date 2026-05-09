@@ -16,7 +16,7 @@ namespace LibrarySystem.Client.Models
 
         [Required(ErrorMessage = "A születési dátum megadása kötelező!")]
         [CustomValidation(typeof(Reader), nameof(ValidateBirthDate))]
-        public DateTime BirthDate { get; set; } = DateTime.Today.AddYears(-20);
+        public DateTime DateOfBirth { get; set; } = DateTime.Today.AddYears(-20);
         
         public static ValidationResult? ValidateBirthDate(DateTime date, ValidationContext context)
         {

@@ -30,8 +30,8 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Születési dátum</label>
-                        <InputDate @bind-Value="editingReader.BirthDate" class="form-control" />
-                        <ValidationMessage For="@(() => editingReader.BirthDate)" class="text-danger" />
+                        <InputDate @bind-Value="editingReader.DateOfBirth" class="form-control" />
+                        <ValidationMessage For="@(() => editingReader.DateOfBirth)" class="text-danger" />
                     </div>
                 </div>
 
@@ -70,7 +70,7 @@
                         <td>@reader.ReaderNumber</td>
                         <td><strong>@reader.Name</strong></td>
                         <td>@reader.Address</td>
-                        <td>@reader.BirthDate.ToShortDateString()</td>
+                        <td>@reader.DateOfBirth.ToShortDateString()</td>
                         <td>
                             <button class="btn btn-sm btn-outline-primary" @onclick="() => PrepareEdit(reader)">Módosítás</button>
                             <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteReader(reader.ReaderNumber)">Törlés</button>
@@ -118,13 +118,16 @@
             ReaderNumber = reader.ReaderNumber,
             Name = reader.Name,
             Address = reader.Address,
-            BirthDate = reader.BirthDate
+            DateOfBirth = reader.DateOfBirth
         };
     }
-
+    
     private void ResetForm()
     {
-        editingReader = new Reader();
+        editingReader = new Reader 
+        { 
+            DateOfBirth = new DateTime(2000, 1, 1) // Ne 0001 legyen!
+        };
     }
 
     private async Task DeleteReader(int id)
