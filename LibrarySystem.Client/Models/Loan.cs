@@ -4,12 +4,12 @@ namespace LibrarySystem.Client.Models
 {
     public class Loan
     {
-        public int Id { get; set; }
+        public int LoanId { get; set; }
 
-        [Required(ErrorMessage = "Az olvasó kiválasztása kötelező!")]
+        [Range(1, int.MaxValue, ErrorMessage = "Az olvasó kiválasztása kötelező!")]
         public int ReaderNumber { get; set; }
 
-        [Required(ErrorMessage = "A könyv kiválasztása kötelező!")]
+        [Range(1, int.MaxValue, ErrorMessage = "A könyv kiválasztása kötelező!")]
         public int BookInventoryNumber { get; set; }
 
         [Required(ErrorMessage = "A kölcsönzés ideje kötelező!")]
@@ -18,7 +18,7 @@ namespace LibrarySystem.Client.Models
 
         [Required(ErrorMessage = "A visszahozási határidő kötelező!")]
         [CustomValidation(typeof(Loan), nameof(ValidateReturnDate))]
-        public DateTime ReturnDate { get; set; } = DateTime.Today.AddDays(14);
+        public DateTime ReturnDeadline { get; set; } = DateTime.Today.AddDays(14);
         
         public decimal PenaltyFee { get; set; }
 

@@ -13,7 +13,8 @@ namespace LibrarySystem.Api.Entities
         public int ReaderNumber { get; set; }
 
         [Required]
-        public int BookNumber { get; set; }
+        [Column("BookNumber")] 
+        public int BookInventoryNumber { get; set; }
 
         [Required(ErrorMessage = "A kölcsönzés ideje kötelező.")]
         public DateTime LoanDate { get; set; }

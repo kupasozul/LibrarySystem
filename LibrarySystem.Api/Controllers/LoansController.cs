@@ -31,11 +31,19 @@ public class LoansController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Loan>> PostLoan(Loan loan)
     {
-        // Validáció: a kölcsönzés ideje nem lehet korábbi a jelenlegi napnál
-        if (loan.LoanDate.Date < DateTime.Today) return BadRequest("Érvénytelen dátum."); 
+        if (loan.LoanDate.Date < DateTime.Today) return BadRequest("Érvénytelen dátum.");
+        
+        var book = await _context.Books.FirstOrDefaultAsync(b => b.InventoryNumber == loan.BookInventoryNumber);
+    
+        if (book == null) return NotFound("A könyv nem található.");
+        if (book.IsBorrowed) return BadRequest("Ez a könyv már ki van kölcsönözve.");
+        
+        book.IsBorrowed = true;
+        
         _context.Loans.Add(loan);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetLoans), new { id = loan.LoanId }, loan);
+
+        return Ok(loan);
     }
 
     private decimal CalculatePenalty(DateTime returnDeadline)
@@ -43,7 +51,7 @@ public class LoansController : ControllerBase
         if (DateTime.Now <= returnDeadline) return 0;
 
         int delayDays = (DateTime.Now - returnDeadline).Days;
-        decimal baseFee = 100; // Tetszőleges alapdíj [cite: 38]
+        decimal baseFee = 100;
         int multiplier = 1;
 
         // Szorzók a PDF alapján
@@ -53,4 +61,33 @@ public class LoansController : ControllerBase
 
         return baseFee * delayDays * multiplier; 
     }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> ReturnBook(int id)
+    {
+        
+        Console.WriteLine($"Törlési kérés érkezett a következő ID-val: {id}");
+
+       
+        var loan = await _context.Loans.FirstOrDefaultAsync(l => l.LoanId == id);
+    
+        if (loan == null) 
+        {
+            
+            Console.WriteLine($"Hiba: Nincs kölcsönzés az adatbázisban {id} azonosítóval.");
+            return NotFound();
+        }
+        
+        var book = await _context.Books.FirstOrDefaultAsync(b => b.InventoryNumber == loan.BookInventoryNumber);
+        if (book != null)
+        {
+            book.IsBorrowed = false;
+        }
+    
+        _context.Loans.Remove(loan);
+        await _context.SaveChangesAsync();
+    
+        return NoContent();
+    }
+    
 }

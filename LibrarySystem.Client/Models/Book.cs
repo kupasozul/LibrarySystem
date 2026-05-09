@@ -17,10 +17,11 @@ namespace LibrarySystem.Client.Models
         [Required(ErrorMessage = "A kiadó megadása kötelező!")]
         [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "A kiadó neve nem állhat csak szóközökből!")]
         public string Publisher { get; set; } = string.Empty;
-
+        
         [Required(ErrorMessage = "A kiadás éve kötelező!")]
-        [Range(0, 2100, ErrorMessage = "A kiadás éve nem lehet negatív szám!")] //
-        public int PublicationYear { get; set; }
+        
+        [Range(1000, 2100, ErrorMessage = "Kérjük, 1000 és 2100 közötti évszámot adj meg!")] 
+        public int? ReleaseYear { get; set; } // Az 'int?' lehetővé teszi, hogy üres legyen
         
         public bool IsBorrowed { get; set; }
     }

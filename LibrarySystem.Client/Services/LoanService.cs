@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using LibrarySystem.Client.Models;
 
+
 public class LoanService
 {
     private readonly HttpClient _http;
@@ -15,7 +16,10 @@ public class LoanService
 
     public async Task AddLoanAsync(Loan loan) => 
         await _http.PostAsJsonAsync("api/loans", loan);
+    
+    public async Task ReturnBookAsync(int loanId) 
+    {
 
-    public async Task ReturnBookAsync(int loanId) => 
-        await _http.PostAsync($"api/loans/return/{loanId}", null);
+        await _http.DeleteAsync($"api/loans/{loanId}");
+    }
 }

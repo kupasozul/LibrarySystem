@@ -42,7 +42,7 @@
                         <tr>
                             <td>@loan.BookInventoryNumber</td>
                             <td>@loan.LoanDate.ToShortDateString()</td>
-                            <td>@loan.ReturnDate.ToShortDateString()</td>
+                            <td>@loan.ReturnDeadline.ToShortDateString()</td>
                             <td>
                                 @if (loan.PenaltyFee > 0)
                                 {

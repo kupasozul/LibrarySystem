@@ -55,8 +55,8 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Visszahozási határidő</label>
-                        <InputDate @bind-Value="newLoan.ReturnDate" class="form-control" />
-                        <ValidationMessage For="@(() => newLoan.ReturnDate)" class="text-danger" />
+                        <InputDate @bind-Value="newLoan.ReturnDeadline" class="form-control" />
+                        <ValidationMessage For="@(() => newLoan.ReturnDeadline)" class="text-danger" />
                     </div>
                 </div>
 
@@ -92,10 +92,10 @@
                         <td>@loan.ReaderNumber</td>
                         <td>@loan.BookInventoryNumber</td>
                         <td>@loan.LoanDate.ToShortDateString()</td>
-                        <td>@loan.ReturnDate.ToShortDateString()</td>
+                        <td>@loan.ReturnDeadline.ToShortDateString()</td>
                         <td class="fw-bold text-danger">@(loan.PenaltyFee > 0 ? $"{loan.PenaltyFee} Ft" : "-")</td>
                         <td>
-                            <button class="btn btn-sm btn-success" @onclick="() => ReturnBook(loan.Id)">Visszahozva</button>
+                            <button class="btn btn-sm btn-success" @onclick="() => ReturnBook(loan.LoanId)">Visszahozva</button>
                         </td>
                     </tr>
                 }
