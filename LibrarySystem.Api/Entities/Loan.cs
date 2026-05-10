@@ -29,9 +29,6 @@ namespace LibrarySystem.Api.Entities
         public Reader? Reader { get; set; }
         public Book? Book { get; set; }
 
-        [NotMapped]
-        public int LateFee { get; set; }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (LoanDate.Date < DateTime.Today)
